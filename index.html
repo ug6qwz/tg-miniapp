@@ -1,21 +1,38 @@
 <!doctype html>
-<html>
+<html lang="ru">
 <head>
   <meta charset="utf-8">
-  <!-- ОБЯЗАТЕЛЬНО подключаем SDK -->
+  <title>Telegram Mini App Redirect</title>
+
+  <!-- Telegram Mini App SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+
 <script>
+  // Инициализация Telegram WebApp
   const tg = window.Telegram.WebApp;
   tg.ready();
 
+  // URL кампании Keitaro
   const base = "https://telegram.g6keitaro.live/k9HLDm";
-  const qs = window.location.search; // ?subid=...&clickid=...
 
+  // Параметры, пришедшие в mini app (?tg_user_id=...&username=...)
+  const qs = window.location.search; // начинается с "?"
+
+  // Корректно выбираем разделитель
+  const separator = base.includes("?") ? "&" : "?";
+
+  // Формируем финальный URL
+  const finalUrl = qs
+    ? base + separator + qs.slice(1)
+    : base;
+
+  // Небольшая задержка для корректной инициализации WebApp
   setTimeout(() => {
-    window.location.replace(base + (qs || ""));
-  }, 300);
+    window.location.replace(finalUrl);
+  }, 200);
 </script>
+
 </body>
 </html>
